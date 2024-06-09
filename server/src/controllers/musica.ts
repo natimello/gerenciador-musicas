@@ -17,6 +17,34 @@ export const getMusicas = async (req: Request, res: Response) => {
   }
 };
 
+export const getMusicasPaginadas = async (req: Request, res: Response) => {
+  try {
+    const ITEMS_PER_PAGE = 10;
+    const page = parseInt(req.query.page as string) || 1;
+    const skip = (page - 1) * ITEMS_PER_PAGE;
+    const musicaRepository = AppDataSource.getRepository(Musica);
+
+    const [entities, total] = await musicaRepository.findAndCount({
+      skip,
+      take: ITEMS_PER_PAGE,
+      relations: ["autores", "genero"],
+    });
+
+    const totalPages = Math.ceil(total / ITEMS_PER_PAGE);
+    const response = {
+      items: entities,
+      page,
+      totalPages,
+      totalItems: total,
+    };
+
+    res.json(response);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Erro ao buscar músicas" });
+  }
+};
+
 export const getMusicaById = async (req: Request, res: Response) => {
   const id: number = +req.params.id;
   const results: Musica = await AppDataSource.getRepository(Musica).findOne({

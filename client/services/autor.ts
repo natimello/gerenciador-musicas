@@ -1,8 +1,8 @@
 import axios from "axios";
-const baseUrl = "http://localhost:3001/usuarios";
+const baseUrl = "http://localhost:3001/autores";
 
-class UsuarioService {
-  async getUsuarios(token: string | null, page: number) {
+class AutorService {
+  async getAutors(token: string | null, page: number) {
     return await axios
       .get(`${baseUrl}/listar?page=${page}`, {
         headers: { Authorization: `Bearer ${token}` },
@@ -13,7 +13,7 @@ class UsuarioService {
       });
   }
 
-  getUsuario(id: any, token: any) {
+  getAutor(id: any, token: any) {
     return axios
       .get(`${baseUrl}/buscar/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
@@ -24,7 +24,7 @@ class UsuarioService {
       });
   }
 
-  addUsuario(data: any, token: any) {
+  addAutor(data: any, token: any) {
     return axios
       .post(`${baseUrl}/registrar`, data, {
         headers: { Authorization: `Bearer ${token}` },
@@ -35,18 +35,18 @@ class UsuarioService {
       });
   }
 
-  deleteUsuario(id: any, token: any) {
+  deleteAutor(id: any, token: any) {
     return axios
       .delete(`${baseUrl}/remover/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => response.status)
       .catch((error) => {
-        console.error("Erro ao remover usuario", error);
+        console.error("Erro ao remover autor", error);
       });
   }
 
-  updateUsuario(id: any, data: any, token: any) {
+  updateAutor(id: any, data: any, token: any) {
     return axios
       .put(`${baseUrl}/atualizar/${id}`, data, {
         headers: { Authorization: `Bearer ${token}` },
@@ -58,4 +58,4 @@ class UsuarioService {
   }
 }
 
-export default new UsuarioService();
+export default new AutorService();
